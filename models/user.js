@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {
       type: DataTypes.UUID,
-      defaultValue: uuidv4,
+      defaultValue: DataTypes.UUIDV4, // gunakan bawaan Sequelize
       primaryKey: true
     },
     name: DataTypes.STRING,
@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     }
+  }, {
+    tableName: 'Users', // ⬅️ Ini WAJIB
+    freezeTableName: true, // ⬅️ Hindari plural otomatis
+    timestamps: true
   });
 
   User.associate = function(models) {

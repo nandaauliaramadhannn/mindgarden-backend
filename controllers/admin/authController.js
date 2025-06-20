@@ -7,12 +7,19 @@ const loginAdmin = async (req, res) => {
 
   try {
     const user = await db.User.findOne({ where: { email } });
-    if (!user || user.role !== 'admin') {
-      return res.status(403).json({ message: 'Access denied' });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Email not found.' });
+    }
+
+    if (user.role !== 'admin') {
+      return res.status(403).json({ message: 'Access denied. Admin only.' });
     }
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!match) {
+      return res.status(401).json({ message: 'Incorrect password.' });
+    }
 
     const token = jwt.sign(
       { id: user.id, role: user.role },
@@ -20,9 +27,21 @@ const loginAdmin = async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    return res.json({ token, user });
+    return res.json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (err) {
-    return res.status(500).json({ message: 'Server error', error: err.message });
+    return res.status(500).json({
+      message: 'Server error',
+      error: err.message
+    });
   }
 };
 
