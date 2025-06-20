@@ -22,7 +22,10 @@
     "morgan": "^1.10.0",
     "mysql2": "^3.6.1",
     "nodemailer": "^6.9.8",
-    "sequelize": "^6.35.1"
+    "openai": "^5.5.1",
+    "sequelize": "^6.35.1",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0",
